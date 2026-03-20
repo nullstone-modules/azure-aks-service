@@ -1,0 +1,15 @@
+org_name: nullstone
+name: azure-aks-service
+friendly_name: Kubernetes AKS App
+description: Creates an AKS app backed by Azure Container Registry.
+category: app
+subcategory: container
+provider_types:
+    - azure
+platform: k8s
+subplatform: aks
+type: ""
+appCategories: []
+is_public: true
+tool_name: opentofu
+source_url: https://github.com/nullstone-modules/azure-aks-service

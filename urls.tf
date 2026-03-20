@@ -1,0 +1,23 @@
+locals {
+  additional_private_urls = local.has_service ? [
+    "http://${local.service_name}:${var.service_port}",
+    "http://${local.service_name}.${local.kubernetes_namespace}.svc.cluster.local:${var.service_port}",
+  ] : []
+  additional_public_urls = []
+
+  private_urls = concat([for cur in local.capabilities.private_urls : cur.url], local.additional_private_urls)
+  public_urls  = concat([for cur in local.capabilities.public_urls : cur.url], local.additional_public_urls)
+}
+
+locals {
+  uri_matcher = "^(?:(?P<scheme>[^:/?#]+):)?(?://(?P<authority>[^/?#]*))?"
+}
+
+locals {
+  authority_matcher = "^(?:(?P<user>[^@]*)@)?(?:(?P<host>[^:]*))(?:[:](?P<port>[\\d]*))?"
+}
+
+locals {
+  private_hosts = [for url in local.private_urls : lookup(regex(local.authority_matcher, lookup(regex(local.uri_matcher, url), "authority")), "host")]
+  public_hosts  = [for url in local.public_urls : lookup(regex(local.authority_matcher, lookup(regex(local.uri_matcher, url), "authority")), "host")]
+}
