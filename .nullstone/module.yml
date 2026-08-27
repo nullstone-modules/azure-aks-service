@@ -4,6 +4,7 @@ friendly_name: Kubernetes AKS App
 description: Creates an AKS app backed by Azure Container Registry.
 category: app
 subcategory: container
+app_type: generic
 provider_types:
     - azure
 platform: k8s
